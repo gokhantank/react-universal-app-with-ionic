@@ -1,0 +1,41 @@
+.mobile-navigation__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-navigation__logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(to bottom right, #3b82f6, #2563eb);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-navigation__logo-icon span {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.mobile-navigation__logo-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.mobile-navigation__links {
+  font-size: 14px;
+}
+
+.mobile-navigation__links.active {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.mobile-navigation__links:not(.active) {
+  color: #4b5563;
+}
+

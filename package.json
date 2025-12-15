@@ -1,0 +1,42 @@
+{
+  "name": "@heelix-workspace/react-source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "nx build",
+    "test": "nx test",
+    "lint": "nx lint",
+    "serve:web": "nx serve web",
+    "serve:mobile": "nx serve mobile"
+  },
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/haptics": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/keyboard": "^6.1.2",
+    "@capacitor/status-bar": "^6.1.2",
+    "@ionic/react": "^8.7.0",
+    "@ionic/react-router": "^8.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router": "^6.28.0",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@nx/js": "^22.2.3",
+    "@nx/react": "^22.2.3",
+    "@nx/vite": "^22.2.3",
+    "@nx/workspace": "^22.2.3",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "nx": "^22.2.3",
+    "typescript": "~5.9.2",
+    "vite": "^5.4.0"
+  }
+}
+
