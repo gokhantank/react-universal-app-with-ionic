@@ -1,15 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonPage, IonContent, IonButton } from '@ionic/react';
-import { TEAMS, teamDataConfig, type Team, Card, Gauge, ProgressBar, TakeActionModal } from '@heelix-workspace/shared';
+import { IonPage, IonContent, IonButton, useIonViewWillEnter } from '@ionic/react';
+import { useLoaderData, useSearchParams, useNavigate, useNavigation } from 'react-router-dom';
+import { App } from '@capacitor/app';
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { type Team, Card, Gauge, ProgressBar, TakeActionModal } from '@heelix-workspace/shared';
+import type { loader } from './Dashboard';
 import './Dashboard.css';
 
 export default function DashboardPage() {
-  const [selectedTeam, setSelectedTeam] = useState<Team>('Engineering Product');
+  const { team: initialTeam, teamData: initialTeamData, teams } = useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+  
+  // Sync selectedTeam with loader data
+  const [selectedTeam, setSelectedTeam] = useState<Team>(initialTeam);
   const [showTeamDropdown, setShowTeamDropdown] = useState(false);
   const [showTakeActionModal, setShowTakeActionModal] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const teamData = teamDataConfig[selectedTeam];
+  // Update selectedTeam when loader data changes
+  useEffect(() => {
+    setSelectedTeam(initialTeam);
+  }, [initialTeam]);
+
+  const teamData = initialTeamData;
+  const isLoading = navigation.state === 'loading';
+
+  // Capacitor: Initialize status bar and handle app lifecycle
+  useIonViewWillEnter(() => {
+    // Set status bar style
+    StatusBar.setStyle({ style: Style.Light });
+    
+    // Handle app state changes
+    App.addListener('appStateChange', ({ isActive }) => {
+      console.log('App state changed. Is active?', isActive);
+    });
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -27,21 +55,35 @@ export default function DashboardPage() {
     };
   }, [showTeamDropdown]);
 
-  const selectTeam = (team: Team) => {
-    setSelectedTeam(team);
+  const selectTeam = async (team: Team) => {
+    // Capacitor: Haptic feedback on team selection
+    await Haptics.impact({ style: ImpactStyle.Light });
     setShowTeamDropdown(false);
+    // Navigate to trigger loader with new team parameter
+    navigate(`/?team=${team}`, { replace: true });
+  };
+
+  const handleTakeAction = async () => {
+    // Capacitor: Haptic feedback on button press
+    await Haptics.impact({ style: ImpactStyle.Medium });
+    setShowTakeActionModal(true);
   };
 
   return (
     <IonPage>
       <IonContent className="dashboard__content">
+        {isLoading && (
+          <div className="dashboard__loading-overlay">
+            <div className="dashboard__loading-spinner"></div>
+          </div>
+        )}
         <div className="dashboard__container">
           {/* HEADER */}
           <div className="dashboard__header">
             <div className="dashboard__header-title">
               <h1>Insights dashboard</h1>
             </div>
-            <IonButton onClick={() => setShowTakeActionModal(true)}>
+            <IonButton onClick={handleTakeAction}>
               Take action
             </IonButton>
           </div>
@@ -57,7 +99,7 @@ export default function DashboardPage() {
               </IonButton>
               {showTeamDropdown && (
                 <div className="dashboard__filters-dropdown-menu">
-                  {TEAMS.map((team) => (
+                  {teams.map((team) => (
                     <button key={team} onClick={() => selectTeam(team)}>
                       <span>{team}</span>
                     </button>

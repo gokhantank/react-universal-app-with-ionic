@@ -13,6 +13,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.lib-navigation-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+
+.lib-navigation-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(to bottom right, #3b82f6, #2563eb);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lib-navigation-logo-icon span {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.lib-navigation-logo-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #111827;
+}
+
+.lib-navigation-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
 }
 
 .lib-navigation-link {
@@ -20,7 +56,7 @@
   transition: color 0.2s;
   color: #374151;
   text-decoration: none;
-  margin-left: 32px;
+  font-size: 14px;
 }
 
 .lib-navigation-link:hover {
@@ -30,4 +66,20 @@
 .lib-navigation-link.active {
   color: #2563eb;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .lib-navigation-container {
+    padding: 12px;
+  }
+
+  .lib-navigation-links {
+    gap: 16px;
+  }
+
+  .lib-navigation-link {
+    font-size: 13px;
+  }
+}
+
 

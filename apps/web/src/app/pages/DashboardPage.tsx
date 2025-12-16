@@ -1,15 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TEAMS, teamDataConfig, type Team, Card, Gauge, ProgressBar, TakeActionModal } from '@heelix-workspace/shared';
+import { useLoaderData, useSearchParams, useNavigate, useNavigation } from 'react-router-dom';
+import { type Team, Card, Gauge, ProgressBar, TakeActionModal } from '@heelix-workspace/shared';
+import type { loader } from './Dashboard';
 import './Dashboard.css';
 
 export default function DashboardPage() {
-  const [selectedTeam, setSelectedTeam] = useState<Team>('Engineering Product');
+  const { team: initialTeam, teamData: initialTeamData, teams } = useLoaderData<typeof loader>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+  
+  // Sync selectedTeam with loader data
+  const [selectedTeam, setSelectedTeam] = useState<Team>(initialTeam);
   const [showTeamDropdown, setShowTeamDropdown] = useState(false);
   const [showTakeActionModal, setShowTakeActionModal] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const teamData = teamDataConfig[selectedTeam];
+  // Update selectedTeam when loader data changes
+  useEffect(() => {
+    setSelectedTeam(initialTeam);
+  }, [initialTeam]);
+
+  const teamData = initialTeamData;
+  const isLoading = navigation.state === 'loading';
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -41,12 +55,18 @@ export default function DashboardPage() {
   }, [showTeamDropdown]);
 
   const selectTeam = (team: Team) => {
-    setSelectedTeam(team);
     setShowTeamDropdown(false);
+    // Navigate to trigger loader with new team parameter
+    navigate(`/?team=${team}`, { replace: true });
   };
 
   return (
     <div className="dashboard">
+      {isLoading && (
+        <div className="dashboard__loading-overlay">
+          <div className="dashboard__loading-spinner"></div>
+        </div>
+      )}
       <div className="dashboard__container">
         {/* HEADER */}
         <div className="dashboard__header">
@@ -72,7 +92,7 @@ export default function DashboardPage() {
             </button>
             {showTeamDropdown && (
               <div className="dashboard__filters-dropdown-menu">
-                {TEAMS.map((team) => (
+                {teams.map((team) => (
                   <button key={team} onClick={() => selectTeam(team)}>
                     <span>{team}</span>
                   </button>
@@ -154,4 +174,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
 

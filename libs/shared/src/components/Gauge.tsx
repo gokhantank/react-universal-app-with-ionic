@@ -30,3 +30,4 @@ export const Gauge: React.FC<GaugeProps> = ({ score }) => {
   );
 };
 
+

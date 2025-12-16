@@ -1,0 +1,14 @@
+.loading-fallback {
+  --background: var(--color-gray-50);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+}
+
+.loading-fallback__text {
+  color: var(--color-gray-600);
+  font-size: var(--font-size-base);
+}
+

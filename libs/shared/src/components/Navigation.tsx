@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
 
   const isActive = (path: string) => {
     if (path === '/') {
-      return location.pathname === '/';
+      return location.pathname === '/' || location.pathname === '';
     }
     return location.pathname.startsWith(path);
   };
@@ -15,20 +15,29 @@ export const Navigation: React.FC = () => {
   return (
     <nav className="lib-navigation">
       <div className="lib-navigation-container">
-        <Link
-          to="/"
-          className={`lib-navigation-link ${isActive('/') ? 'active' : ''}`}
-        >
-          Dashboard
-        </Link>
-        <Link
-          to="/factor-analysis"
-          className={`lib-navigation-link ${isActive('/factor-analysis') ? 'active' : ''}`}
-        >
-          Factor Analysis
-        </Link>
+        <div className="lib-navigation-logo">
+          <div className="lib-navigation-logo-icon">
+            <span>h</span>
+          </div>
+          <span className="lib-navigation-logo-text">heelix</span>
+        </div>
+        <div className="lib-navigation-links">
+          <Link
+            to="/"
+            className={`lib-navigation-link ${isActive('/') ? 'active' : ''}`}
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/factor-analysis"
+            className={`lib-navigation-link ${isActive('/factor-analysis') ? 'active' : ''}`}
+          >
+            Factor Analysis
+          </Link>
+        </div>
       </div>
     </nav>
   );
 };
+
 

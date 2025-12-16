@@ -1,10 +1,11 @@
 import React from 'react';
 import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton } from '@ionic/react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './MobileNavigation.css';
 
 export const MobileNavigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -25,12 +26,12 @@ export const MobileNavigation: React.FC = () => {
           </div>
         </IonTitle>
         <IonButtons slot="end">
-          <IonButton routerLink="/" routerDirection="root">
+          <IonButton onClick={() => navigate('/')}>
             <span className={`mobile-navigation__links ${isActive('/') ? 'active' : ''}`}>
               Dashboard
             </span>
           </IonButton>
-          <IonButton routerLink="/factor-analysis" routerDirection="root">
+          <IonButton onClick={() => navigate('/factor-analysis')}>
             <span className={`mobile-navigation__links ${isActive('/factor-analysis') ? 'active' : ''}`}>
               Factor analysis
             </span>
